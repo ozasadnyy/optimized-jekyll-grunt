@@ -1,0 +1,21 @@
+# Grunt handles images and assets.
+exclude: ['img', 'css', 'js', 'fonts',
+          '**.png', '**.jpg', '**.jpeg', '**.gif', '**.webp', '**.svg', '**.ico']
+
+# _config.build.yml sets future and show_drafts to false on `grunt build`
+future: true
+show_drafts: true
+
+permalink: '/blog/:title'
+paginate: 5
+paginate_path: '/page:num'
+
+# Markdown library
+markdown: kramdown
+
+# Site settings
+baseurl: ""
+url: ""
+
+# Varibles
+sitename: "Jekyll & Grunt"

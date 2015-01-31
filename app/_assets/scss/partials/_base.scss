@@ -1,0 +1,39 @@
+// Font weights
+$light: 100;
+$regular: 300;
+$bold: 600;
+
+// Base Font
+$base-font-family: sans-serif;
+$fixed-font-family: 'Arial';
+$base-font-weight: $regular;
+$base-font-size: 20px;
+$base-line-height: 28px;
+
+// Headings
+$header-font-weight: $regular;
+$h1-font-size: 3.2 * $base-font-size;
+$h2-font-size: 2.8 * $base-font-size;
+$h3-font-size: 2.4 * $base-font-size;
+$h4-font-size: 2 * $base-font-size;
+$h5-font-size: 1.6 * $base-font-size;
+$h6-font-size: 1.1 * $base-font-size;
+
+// Colors
+$main-color: #00BCD4;
+$main-color-second: #88CED7;
+$sub-color: #26C6DA;
+$sub-color-second: #6BA2A9;
+$header-color: #333333;
+$text-color: #666666;
+$sub-text-color: #999999;
+$link-lighten-amount: 20%;
+
+// Animations
+$transition-duration: 0.2s;
+$transition-animation: ease-in-out;
+$color-animation: color $transition-duration $transition-animation;
+$opacity-animation: opacity $transition-duration $transition-animation;
+$box-shadow-animation: box-shadow $transition-duration $transition-animation;
+
+@import "../modules/utility";

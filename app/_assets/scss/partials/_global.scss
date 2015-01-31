@@ -1,0 +1,77 @@
+body {
+    font-family: $fixed-font-family, $base-font-family;
+    font-size: $base-font-size;
+    font-weight: $base-font-weight;
+    line-height: $base-line-height;
+    color: $text-color;
+    word-break: break-word;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, .004);
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    @media (max-width: 767px) {
+        font-size: $base-font-size * 0.8;
+        line-height: $base-line-height * 0.8;
+    }
+}
+b, strong {
+    font-weight: $bold;
+}
+a {
+    @include linkColor($main-color);
+    transition: $color-animation;
+    &:hover, &:active, &:focus {
+        text-decoration: none;
+    }
+}
+h1, h2, h3, h4, h5, h6 {
+    font-weight: $header-font-weight;
+    display: block;
+    word-wrap: break-word;
+}
+h1 {
+    font-size: $h1-font-size;
+    @media (max-width: 767px) {
+        font-size: $h1-font-size * 0.6;
+    }
+}
+h2 {
+    font-size: $h2-font-size;
+    @media (max-width: 767px) {
+        font-size: $h2-font-size * 0.6;
+    }
+}
+h3 {
+    font-size: $h3-font-size;
+    @media (max-width: 767px) {
+        font-size: $h3-font-size * 0.7;
+    }
+}
+h4 {
+    font-size: $h4-font-size;
+    @media (max-width: 767px) {
+        font-size: $h4-font-size * 0.7;
+    }
+}
+h5 {
+    font-size: $h5-font-size;
+    @media (max-width: 767px) {
+        font-size: $h5-font-size * 0.8;
+    }
+}
+h6 {
+    font-size: $h6-font-size;
+    @media (max-width: 767px) {
+        font-size: $h6-font-size * 0.8;
+    }
+}
+hr {
+    border-top: 1px dotted #cccccc;
+}
+.header {
+    margin-bottom: 2em;
+}
+.footer {
+    margin-top: 3em;
+    font-size: 0.8em;
+}
