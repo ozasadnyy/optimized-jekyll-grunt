@@ -8,24 +8,26 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         app: {
-            app: 'app',
+            source: 'app',
             dist: 'dist',
             baseurl: ''
         },
         watch: {
             sass: {
-                files: ['<%= app.app %>/_assets/scss/**/*.{scss,sass}'],
+                files: ['<%= app.source %>/_assets/scss/**/*.{scss,sass}'],
                 tasks: ['sass:server', 'autoprefixer']
             },
             scripts: {
-                files: ['<%= app.app %>/_assets/js/**/*.{js}'],
+                files: ['<%= app.source %>/_assets/js/**/*.{js}'],
                 tasks: ['uglify']
             },
             jekyll: {
-                files: [
-                    '<%= app.app %>/**/*.{html,yml,md,mkd,markdown}'
-                ],
+                files: ['<%= app.source %>/**/*.{html,yml,md,mkd,markdown}'],
                 tasks: ['jekyll:server']
+            },
+            images: {
+                files: ['<%= app.source %>/img/**/*.{gif,jpg,jpeg,png,svg,webp}'],
+                tasks: ['copy:server']
             },
             livereload: {
                 options: {
@@ -35,7 +37,7 @@ module.exports = function(grunt) {
                     '.jekyll/**/*.{html,yml,md,mkd,markdown}',
                     '.tmp/<%= app.baseurl %>/css/*.css',
                     '.tmp/<%= app.baseurl %>/js/*.js',
-                    '<%= app.app %>/img/**/*.{gif,jpg,jpeg,png,svg,webp}'
+                    '.tmp/<%= app.baseurl %>/img/**/*.{gif,jpg,jpeg,png,svg,webp}'
                 ]
             }
         },
@@ -54,7 +56,7 @@ module.exports = function(grunt) {
                     base: [
                         '.jekyll',
                         '.tmp',
-                        '<%= app.app %>'
+                        '<%= app.source %>'
                     ]
                 }
             },
@@ -89,7 +91,7 @@ module.exports = function(grunt) {
         jekyll: {
             options: {
                 config: '_config.yml,_config.build.yml',
-                src: '<%= app.app %>'
+                src: '<%= app.source %>'
             },
             dist: {
                 options: {
@@ -124,12 +126,23 @@ module.exports = function(grunt) {
             }
         },
         uglify: {
-            options: {
-                preserveComments: false
+            server: {
+                options: {
+                    mangle: false,
+                    beautify: true
+                },
+                files: {
+                    '.tmp/<%= app.baseurl %>/js/scripts.js': ['<%= app.source %>/_assets/js/**/*.js']
+                }
             },
             dist: {
+                options: {
+                    compress: true,
+                    preserveComments: false,
+                    report: 'min'
+                },
                 files: {
-                    '.tmp/<%= app.baseurl %>/js/scripts.js': ['<%= app.app %>/_assets/js/**/*.js']
+                    '<%= app.dist %>/<%= app.baseurl %>/js/scripts.js': ['<%= app.source %>/_assets/js/**/*.js']
                 }
             }
         },
@@ -143,7 +156,7 @@ module.exports = function(grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= app.app %>/_assets/scss',
+                    cwd: '<%= app.source %>/_assets/scss',
                     src: '**/*.{scss,sass}',
                     dest: '.tmp/<%= app.baseurl %>/css',
                     ext: '.css'
@@ -155,7 +168,7 @@ module.exports = function(grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= app.app %>/_assets/scss',
+                    cwd: '<%= app.source %>/_assets/scss',
                     src: '**/*.{scss,sass}',
                     dest: '<%= app.dist %>/<%= app.baseurl %>/css',
                     ext: '.css'
@@ -169,19 +182,27 @@ module.exports = function(grunt) {
             },
             dist: {
                 src: '<%= app.dist %>/<%= app.baseurl %>/**/*.html',
-                dest: '.tmp/<%= app.baseurl %>/css/blog.css'
+                dest: '<%= app.dist %>/<%= app.baseurl %>/css/blog.css'
             }
         },
         autoprefixer: {
             options: {
                 browsers: ['last 3 versions']
             },
-            dist: {
+            server: {
                 files: [{
                     expand: true,
                     cwd: '.tmp/<%= app.baseurl %>/css',
                     src: '**/*.css',
                     dest: '.tmp/<%= app.baseurl %>/css'
+                }]
+            },
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= app.dist %>/<%= app.baseurl %>/css',
+                    src: '**/*.css',
+                    dest: '<%= app.dist %>/<%= app.baseurl %>/css'
                 }]
             }
         },
@@ -190,7 +211,7 @@ module.exports = function(grunt) {
                 options: {
                     base: './',
                     css: [
-                        '.tmp/<%= app.baseurl %>/css/blog.css'
+                        '<%= app.dist %>/<%= app.baseurl %>/css/blog.css'
                     ],
                     minify: true,
                     width: 320,
@@ -212,9 +233,9 @@ module.exports = function(grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '.tmp/<%= app.baseurl %>/css',
+                    cwd: '<%= app.dist %>/<%= app.baseurl %>/css',
                     src: ['*.css'],
-                    dest: '.tmp/<%= app.baseurl %>/css'
+                    dest: '<%= app.dist %>/<%= app.baseurl %>/css'
                 }]
             }
         },
@@ -242,16 +263,13 @@ module.exports = function(grunt) {
             }
         },
         copy: {
-            dist: {
+            server: {
                 files: [{
                     expand: true,
                     dot: true,
-                    cwd: '.tmp/<%= app.baseurl %>',
-                    src: [
-                        'css/**/*',
-                        'js/**/*'
-                    ],
-                    dest: '<%= app.dist %>/<%= app.baseurl %>'
+                    cwd: '<%= app.source %>',
+                    src: ['img/**/*'],
+                    dest: '.tmp/<%= app.baseurl %>'
                 }]
             }
         },
@@ -279,8 +297,8 @@ module.exports = function(grunt) {
             'clean:server',
             'jekyll:server',
             'sass:server',
-            'autoprefixer',
-            'uglify',
+            'autoprefixer:server',
+            'uglify:server',
             'connect:livereload',
             'watch'
         ]);
@@ -300,14 +318,13 @@ module.exports = function(grunt) {
         'uncss',
         'autoprefixer',
         'cssmin',
-        'uglify',
+        'uglify:dist',
         'critical',
         'htmlmin'
     ]);
 
     grunt.registerTask('deploy', [
         'build',
-        'copy',
         'buildcontrol'
     ]);
 
