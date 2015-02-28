@@ -7,6 +7,6 @@ Template for optimized Jekyll site or blog with Grunt
 4.  `$cd` to the directory and run `bundle install`
 5.  Run `npm install` to install the necessary "npm" dependencies
 6.  Then run `bower install` to install the front-end dependencies
-7.  **That's all. You template is ready**
+7.  **That's all. Your template is ready**
 
 You can find more information about project in [this article](http://o.zasadnyy.com/blog/optimized-jekyll-site-with-grunt).
